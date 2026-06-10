@@ -1,3 +1,5 @@
+> Interface guide: [English](./INTERFACE_GUIDE_EN.md) | [中文](./INTERFACE_GUIDE_CN.md)
+
 # LLM Eval Benchmark (CLI)
 
 This repo provides a lightweight evaluation harness for comparing LLMs, prompts, and RAG vs direct answering. It is CLI-first and designed to run on HPC.

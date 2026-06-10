@@ -1,9 +1,24 @@
-> Interface guide: [English](./INTERFACE_GUIDE_EN.md) | [中文](./INTERFACE_GUIDE_CN.md)
+[**English**](./README.md) | [中文](./README_CN.md)
 
-# LLM Eval Benchmark (CLI)
+# LLM Eval Benchmark
 
-This repo provides a lightweight evaluation harness for comparing LLMs, prompts, and RAG vs direct answering. It is CLI-first and designed to run on HPC.
+[![Repository quality](https://github.com/changyufei222/llm-eval-benchmark/actions/workflows/repository-quality.yml/badge.svg)](https://github.com/changyufei222/llm-eval-benchmark/actions/workflows/repository-quality.yml)
+[![Release](https://img.shields.io/github/v/release/changyufei222/llm-eval-benchmark?display_name=tag)](https://github.com/changyufei222/llm-eval-benchmark/releases)
+[![Citation](https://img.shields.io/badge/citation-CITATION.cff-2f6f9f.svg)](./CITATION.cff)
 
+A reproducible CLI-first benchmark for controlled Direct-versus-RAG comparisons, stability analysis, and auditable model evaluation.
+
+**Status:** Fixed-set benchmark release | **Public release:** 2026-06-10
+
+| Start here | Resource |
+|---|---|
+| Primary documentation | [Release gate](./FINAL_RELEASE_GATE.md) |
+| Reproducibility / implementation | [Protocol](./docs/benchmark_protocol_cn.md) |
+| Verified outcomes | [Result summary](./FINAL_RESULT_SUMMARY.md) |
+
+![Eight-model Direct versus RAG benchmark](./docs/benchmark_main_8models_direct_vs_rag_2026-04-19.png)
+
+---
 ## Highlights
 - promptfoo for prompt/system evals
 - ragas for RAG-specific metrics
@@ -233,3 +248,5 @@ This section is only a runnable smoke example. It is not the official promoted b
 - Persist automatic cleanup for stale RAGAS artifacts after local fallback runs.
 - Split category breakdown by `method + category` instead of category-only aggregation.
 - Add benchmark cards for structure-specific and methodology-specific domain questions.
+
+

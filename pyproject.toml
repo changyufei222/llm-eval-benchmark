@@ -1,0 +1,27 @@
+[project]
+name = "llm-eval-benchmark"
+version = "0.1.0"
+description = "Evaluation harness for LLMs, prompts, and RAG"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+  "ragas",
+  "openai",
+  "pandas",
+  "numpy",
+  "matplotlib",
+  "pydantic",
+  "python-dotenv",
+  "datasets",
+  "langchain-core",
+  "langchain-openai",
+  "tabulate",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pipelines*", "metrics*"]

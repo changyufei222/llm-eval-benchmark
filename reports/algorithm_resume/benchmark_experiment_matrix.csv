@@ -1,0 +1,6 @@
+component,scope,models_or_conditions,main_metric,key_artifact,headline
+main_table,"fixed 120 questions, Direct vs RAG","8 models","answer_relevancy uplift","reports/benchmark_final_summary_20260502/main_table_ranked_summary.csv","all 8/8 models show positive RAG uplift"
+category_table,"doc/design, ragppi, schema_tables","8 models x 3 buckets","category uplift","reports/benchmark_final_summary_20260502/category_overall_uplift_summary.csv","doc/design and schema_tables benefit the most from retrieval"
+appendix_table,"provider-native supplementary protocol","8 models","appendix uplift","reports/benchmark_final_summary_20260502/appendix_ranked_summary.csv","supplementary protocol shows provider-native behavior differences"
+topk_ablation,"candidate_top_k in {32,64,128}","8 models","quality-efficiency tradeoff","reports/benchmark_final_summary_20260502/topk_overall_summary.csv","32 is the best promoted overall tradeoff"
+stability_release,"RAG-only repeated replay","DeepSeek-V3.2 vs MiniMax-M2.7, 100 rounds each","answer_relevancy mean and 95% CI","reports/benchmark_final_summary_20260502/stability_final_summary.csv","MiniMax leads on quality, DeepSeek leads on latency"

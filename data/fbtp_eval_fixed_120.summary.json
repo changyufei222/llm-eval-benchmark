@@ -1,0 +1,33 @@
+{
+  "output_path": "data\\fbtp_eval_fixed_120.jsonl",
+  "rows": 120,
+  "ragppi_count": 40,
+  "doc_count": 20,
+  "schema_counts": {
+    "protein_profile": 8,
+    "protein_identifier": 4,
+    "interaction_overview": 8,
+    "affinity": 8,
+    "developability": 6,
+    "annotation": 4,
+    "provenance": 4,
+    "structure": 4,
+    "digestive_assay": 2,
+    "immunogenicity": 2,
+    "loop_annotation": 2,
+    "loop_flexibility": 2,
+    "protein_flexibility": 2,
+    "target_variant": 2,
+    "source_metadata": 2
+  },
+  "source_group_counts": {
+    "ragppi_gold": 40,
+    "doc_design": 20,
+    "schema_tables": 60
+  },
+  "record_type_counts": {
+    "csv": 40,
+    "text": 20,
+    "jsonl": 60
+  }
+}

@@ -1,0 +1,6 @@
+table_name,status,scope,key_file,headline
+main,complete,"8 models, Direct vs RAG, fixed 120 questions",main_table_ranked_summary.csv,主表 8 模型结果已完整，可直接用于主结论
+category,complete,8 models x 3 category buckets,category_overall_uplift_summary.csv,分类表显示 doc/design 与 schema_tables 提升最明显
+appendix,complete,8 models native-thinking supplementary table,appendix_ranked_summary.csv,附加表用于补充 provider/native-thinking 行为差异
+topk,complete_with_protocol_32_64_128,"8 models x topK {32,64,128}",topk_overall_summary.csv,topK 正式协议为 32/64/128，256 已废弃
+stability,complete_clean,2 models x 100 rounds RAG-only stability,stability_final_summary.csv,稳定性表已清理坏题与脏 summary，可用于正式比较

@@ -1,0 +1,17 @@
+method,faithfulness,answer_relevancy,context_precision,source_hit_rate,table_hit_rate,id_hit_rate,latency_ms,estimated_cost_usd,model_label,model
+RAG,0.8516,0.7244,0.9281,0.55,0.4181,0.3333,76168.8209,0.0,DeepSeek-V3.2,DeepSeek-V3.2
+Direct,,0.6398,,0.0,0.0,0.0,2779.8517,0.0,DeepSeek-V3.2,DeepSeek-V3.2
+RAG,0.8927,0.7931,0.974,0.55,0.4181,0.3333,75452.1278,0.0,GLM-5,GLM-5
+Direct,,0.1391,,0.0,0.0,0.0,4027.7729,0.0,GLM-5,GLM-5
+RAG,0.8217,0.6972,0.8596,0.55,0.4181,0.3333,74501.6965,0.0,Kimi-K2.5,Kimi-K2.5
+Direct,,0.1649,,0.0,0.0,0.0,2153.1919,0.0,Kimi-K2.5,Kimi-K2.5
+RAG,0.8377,0.7203,0.9339,0.55,0.4181,0.3333,93814.5823,0.0,DeepSeek-R1,DeepSeek-R1
+Direct,,0.0682,,0.0,0.0,0.0,7422.6157,0.0,DeepSeek-R1,DeepSeek-R1
+RAG,0.8433,0.7093,0.9322,0.55,0.4181,0.3333,72408.0502,0.0,Qwen3-235B-A22B-Instruct-2507,Qwen3-235B-A22B-Instruct-2507
+Direct,,0.1795,,0.0,0.0,0.0,1986.2049,0.0,Qwen3-235B-A22B-Instruct-2507,Qwen3-235B-A22B-Instruct-2507
+RAG,0.7939,0.7704,0.9464,0.55,0.4181,0.3333,76885.9668,0.0,MiniMax-M2,MiniMax-M2
+Direct,,0.0139,,0.0,0.0,0.0,2571.4031,0.0,MiniMax-M2,MiniMax-M2
+RAG,0.9449,0.8306,1.0,0.55,0.4181,0.3333,75810.9218,0.0,MiniMax-M2.7,MiniMax-M2.7
+Direct,,0.0056,,0.0,0.0,0.0,4856.8974,0.0,MiniMax-M2.7,MiniMax-M2.7
+RAG,0.8243,0.7389,0.9218,0.55,0.4181,0.3333,73817.2717,0.0,ERNIE-4.5-Turbo-128K,ERNIE-4.5-Turbo-128K
+Direct,,0.4061,,0.0,0.0,0.0,2754.0511,0.0,ERNIE-4.5-Turbo-128K,ERNIE-4.5-Turbo-128K

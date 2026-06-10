@@ -1,0 +1,18 @@
+# promptfoo config (direct answering)
+description: "FBTP prompt eval"
+providers:
+  - id: openai:DeepSeek-V3.2
+    config:
+      apiBaseUrl: https://llmapi.paratera.com
+      apiKeyEnvar: OPENAI_API_KEY
+      temperature: 0.2
+prompts:
+  - |
+    Answer the question concisely:
+    {{question}}
+
+tests:
+  - vars:
+      question: "What is reported about the interaction between KLK7 and CDSN?"
+  - vars:
+      question: "What is reported about the interaction between MED15 and sbp-1?"

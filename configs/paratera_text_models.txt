@@ -1,0 +1,9 @@
+# Paratera text-generation preset for RAG vs Direct comparison
+DeepSeek-V3.2
+DeepSeek-R1
+GLM-5
+Kimi-K2.5
+Qwen3-235B-A22B-Instruct-2507
+MiniMax-M2
+MiniMax-M2.7
+ERNIE-4.5-Turbo-128K

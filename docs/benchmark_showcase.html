@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM Eval Benchmark Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f4efe4;
+      --paper-strong: #fffaf1;
+      --ink: #162838;
+      --muted: #5d6b74;
+      --line: rgba(22, 40, 56, 0.14);
+      --accent: #bf5f3d;
+      --accent-deep: #9d4729;
+      --accent-soft: rgba(191, 95, 61, 0.12);
+      --moss: #1d6a59;
+      --moss-soft: rgba(29, 106, 89, 0.12);
+      --gold: #c79d3d;
+      --shadow: 0 18px 60px rgba(22, 40, 56, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Manrope", "Trebuchet MS", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(199, 157, 61, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(29, 106, 89, 0.15), transparent 30%),
+        linear-gradient(180deg, #fbf7ee 0%, #f0e7d8 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 36px 22px 68px;
+    }
+
+    .hero,
+    .panel {
+      background: rgba(255, 250, 241, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      border-radius: calc(var(--radius-lg) + 6px);
+      margin-bottom: 22px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      opacity: 0.9;
+    }
+
+    .hero::before {
+      width: 320px;
+      height: 320px;
+      right: -80px;
+      top: -120px;
+      background: radial-gradient(circle, rgba(191, 95, 61, 0.16), transparent 72%);
+    }
+
+    .hero::after {
+      width: 260px;
+      height: 260px;
+      left: -80px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(29, 106, 89, 0.13), transparent 70%);
+    }
+
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      background: rgba(22, 40, 56, 0.06);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      margin: 18px 0 14px;
+      max-width: 720px;
+      font-family: "Fraunces", "Georgia", serif;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
+
+    .lede {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    .pill-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(22, 40, 56, 0.08);
+      box-shadow: 0 8px 18px rgba(22, 40, 56, 0.08);
+    }
+
+    .hero-links {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .hero-link {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(22, 40, 56, 0.08);
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    }
+
+    .hero-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 36px rgba(22, 40, 56, 0.12);
+      border-color: rgba(191, 95, 61, 0.22);
+    }
+
+    .hero-link .label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .hero-link .title {
+      display: block;
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .panel {
+      border-radius: var(--radius-lg);
+      padding: 26px;
+    }
+
+    .span-12 { grid-column: span 12; }
+    .span-8 { grid-column: span 8; }
+    .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+
+    .section-kicker {
+      color: var(--accent-deep);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 10px 0 8px;
+      font-family: "Fraunces", "Georgia", serif;
+      font-size: clamp(1.45rem, 2vw, 2.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .section-copy {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.98rem;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(247,239,228,0.84));
+      border: 1px solid rgba(22, 40, 56, 0.08);
+    }
+
+    .metric-card .value {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .metric-card .name {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 13px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr) 98px;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .rank-row .model {
+      font-weight: 800;
+    }
+
+    .rank-row .detail {
+      display: block;
+      color: var(--muted);
+      font-size: 0.83rem;
+      margin-top: 4px;
+    }
+
+    .bar-track {
+      position: relative;
+      overflow: hidden;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(22, 40, 56, 0.08);
+    }
+
+    .bar-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent) 0%, #de8f47 100%);
+      transition: width 900ms cubic-bezier(.2,.7,.2,1);
+    }
+
+    body.ready .bar-fill {
+      width: var(--target-width);
+    }
+
+    .rank-value {
+      text-align: right;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .mini-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(22, 40, 56, 0.08);
+    }
+
+    .mini-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mini-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .mini-sub {
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .tiny-track {
+      position: relative;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(22, 40, 56, 0.08);
+      overflow: hidden;
+    }
+
+    .tiny-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      border-radius: 999px;
+      transition: width 900ms cubic-bezier(.2,.7,.2,1);
+    }
+
+    .tiny-fill.gold { background: linear-gradient(90deg, #c58f31 0%, #e3bf67 100%); }
+    .tiny-fill.moss { background: linear-gradient(90deg, #1d6a59 0%, #3f9580 100%); }
+    .tiny-fill.ink { background: linear-gradient(90deg, #1b3648 0%, #48677b 100%); }
+
+    body.ready .tiny-fill {
+      width: var(--target-width);
+    }
+
+    .duel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .duel-card {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(22, 40, 56, 0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(247,239,228,0.76));
+    }
+
+    .duel-card .tag {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .tag.quality {
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+
+    .tag.speed {
+      background: var(--moss-soft);
+      color: var(--moss);
+    }
+
+    .duel-card h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
+
+    .duel-card p {
+      margin: 10px 0 16px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .duel-stats {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 0.92rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .boundary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .boundary-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(22, 40, 56, 0.08);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .boundary-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+    }
+
+    .boundary-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(22, 40, 56, 0.05);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 520ms ease, transform 520ms ease;
+    }
+
+    body.ready .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .hero-links,
+      .metric-grid,
+      .split-grid,
+      .duel-grid,
+      .boundary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .span-8,
+      .span-7,
+      .span-6,
+      .span-5,
+      .span-4 {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        padding: 18px 14px 42px;
+      }
+
+      .hero,
+      .panel {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .hero-links,
+      .metric-grid,
+      .split-grid,
+      .duel-grid,
+      .boundary {
+        grid-template-columns: 1fr;
+      }
+
+      .rank-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .rank-value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero reveal">
+      <div class="eyebrow">Final Release · 2026-05-02 · Lightweight Showcase</div>
+      <h1>Controlled Benchmark,<br>Clean Story.</h1>
+      <p class="lede">
+        这个页面只做一件事：把 `llm-eval-benchmark` 的正式结论展示得清楚、简洁、好看。
+        它不是 dashboard，也不是 source of truth；真正的官方口径仍然来自 final summary package 和 release gate。
+      </p>
+      <div class="pill-row">
+        <div class="pill">8-model fixed120 main table</div>
+        <div class="pill">topK protocol: 32 / 64 / 128</div>
+        <div class="pill">clean stability: 200 rounds, failed_rows = 0</div>
+        <div class="pill">official vs audit-only boundary clarified</div>
+      </div>
+      <div class="hero-links">
+        <a class="hero-link" href="../FINAL_RESULT_SUMMARY.md">
+          <span class="label">Root Summary</span>
+          <span class="title">Official final positioning and promoted headline</span>
+        </a>
+        <a class="hero-link" href="../FINAL_RELEASE_GATE.md">
+          <span class="label">Release Gate</span>
+          <span class="title">What counts as official, and what does not</span>
+        </a>
+        <a class="hero-link" href="../reports/benchmark_final_summary_20260502/benchmark_results_final_summary_cn.md">
+          <span class="label">Chinese Summary</span>
+          <span class="title">Teacher-facing and project-facing narrative entry</span>
+        </a>
+        <a class="hero-link" href="../reports/benchmark_final_summary_20260502/benchmark_master_overview.csv">
+          <span class="label">Master Overview</span>
+          <span class="title">One CSV that anchors the full result family</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="panel span-12 reveal">
+        <div class="section-kicker">At A Glance</div>
+        <h2>先讲结论，再讲边界</h2>
+        <p class="section-copy">
+          这个 benchmark 最终能成立，不是因为“有很多结果”，而是因为现在已经有了正式 promotion、clean stability、
+          明确的 topK 协议，以及正式结果和历史修复痕迹的边界。
+        </p>
+        <div class="metric-grid" id="metric-grid"></div>
+      </article>
+
+      <article class="panel span-7 reveal">
+        <div class="section-kicker">Main Table</div>
+        <h2>8 个模型，全部出现正向 RAG uplift</h2>
+        <p class="section-copy">
+          主表是这个项目最重要的 headline：统一 fixed120 题集，统一 Direct / RAG 比较，统一受控协议。
+          下面按 `answer_relevancy uplift` 排序展示。
+        </p>
+        <div class="rank-list" id="main-ranking"></div>
+      </article>
+
+      <article class="panel span-5 reveal">
+        <div class="section-kicker">Narrative Value</div>
+        <h2>为什么它现在更适合对外展示</h2>
+        <p class="section-copy">
+          这次不是把旧 smoke run 涂得更漂亮，而是把真正的正式结果入口、历史 repair 痕迹、以及控制台型目录的身份都分清楚了。
+        </p>
+        <div class="mini-stack">
+          <div class="mini-card">
+            <strong>正式 promotion 已完成</strong>
+            <p class="mini-sub">旧的 24-row smoke checkpoint 不再占据根层官方口径，fixed120 主结果已经被正式提升。</p>
+          </div>
+          <div class="mini-card">
+            <strong>selected-RAG stability 已 clean</strong>
+            <p class="mini-sub">两模型共 200 个轮次全部同步回本地，`failed_rows_total = 0`，可干净支持质量-效率对比。</p>
+          </div>
+          <div class="mini-card">
+            <strong>dashboard 不再喧宾夺主</strong>
+            <p class="mini-sub">control-plane dashboard 被明确定位为工程支持面，而不是 benchmark 交付面的 source of truth。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel span-6 reveal">
+        <div class="section-kicker">Category View</div>
+        <h2>RAG 的帮助最集中在哪些题型</h2>
+        <p class="section-copy">
+          结果并不是“所有题都同样受益”。`doc/design` 和 `schema_tables` 的平均 uplift 更高，
+          说明当前系统对文档设计理解和结构化字段问答更有优势。
+        </p>
+        <div class="mini-stack" id="category-stack"></div>
+      </article>
+
+      <article class="panel span-6 reveal">
+        <div class="section-kicker">topK Tradeoff</div>
+        <h2>候选池不是越大越好</h2>
+        <p class="section-copy">
+          正式协议只保留 `32 / 64 / 128`。从平均 `RAG answer_relevancy` 和时延一起看，
+          `32` 是最适合拿去讲的整体折中点。
+        </p>
+        <div class="mini-stack" id="topk-stack"></div>
+      </article>
+
+      <article class="panel span-12 reveal">
+        <div class="section-kicker">Stability Duel</div>
+        <h2>质量优先 vs 效率优先，结论终于干净了</h2>
+        <p class="section-copy">
+          正式稳定性页面不再承担“所有早期 repeated-sampling 计划”的包袱，而是只讲 clean selected-RAG release。
+          这让最终叙事非常直接：`MiniMax-M2.7` 质量领先，`DeepSeek-V3.2` 延迟更低。
+        </p>
+        <div class="duel-grid" id="stability-grid"></div>
+        <div class="note">
+          稳定性 source of truth：
+          <a href="../reports/remote_sync/stability_selected_rag_best_vs_worst_20260423_133411/local_analysis_final_clean/completion_check.json">
+            completion_check.json
+          </a>
+          ，其中记录了 `200` 个 round、两模型各 `100` 轮且 `failed_rows_total = 0`。
+        </div>
+      </article>
+
+      <article class="panel span-12 reveal">
+        <div class="section-kicker">Boundary</div>
+        <h2>正式结果和历史结果，必须分开看</h2>
+        <p class="section-copy">
+          这部分不是附加说明，而是这个项目从“75%-85%”走到“可以拿去讲”的关键。
+          你现在可以很明确地告诉别人哪些目录是 final package，哪些只是 audit trail。
+        </p>
+        <div class="boundary">
+          <div class="boundary-card">
+            <h3>Official</h3>
+            <ul>
+              <li>`FINAL_RESULT_SUMMARY.md`</li>
+              <li>`FINAL_RELEASE_GATE.md`</li>
+              <li>`reports/benchmark_final_summary_20260502/`</li>
+              <li>`remote_sync/main_results_ragas_fixed120_controlled8_merged_20260418_133150`</li>
+              <li>`remote_sync/stability_selected_rag_best_vs_worst_20260423_133411`</li>
+            </ul>
+          </div>
+          <div class="boundary-card">
+            <h3>Audit-only / historical</h3>
+            <ul>
+              <li>`reports/latest/*` and smoke folders</li>
+              <li>`remote_sync/*backup*`</li>
+              <li>`main_results_ragas_fixed120_missing2_*`</li>
+              <li>`formal_ragas_4models_100rounds_50sample_*`</li>
+              <li>`control_plane_dashboard/` as engineering surface</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer">
+      Lightweight showcase only. For the authoritative project record, always go back to
+      <a href="../FINAL_RESULT_SUMMARY.md">FINAL_RESULT_SUMMARY.md</a>,
+      <a href="../FINAL_RELEASE_GATE.md">FINAL_RELEASE_GATE.md</a>, and
+      <a href="../reports/benchmark_final_summary_20260502/README.md">the final summary package</a>.
+    </p>
+  </main>
+
+  <script>
+    const metrics = [
+      { value: "8 / 8", name: "主表全部模型都出现正向 RAG uplift" },
+      { value: "32", name: "正式 topK 里最优整体折中点" },
+      { value: "200", name: "clean stability release 的总轮次数" },
+      { value: "0", name: "稳定性 clean release 的 failed_rows_total" }
+    ];
+
+    const mainRows = [
+      { model: "MiniMax-M2.7", direct: 0.0056, rag: 0.9072, uplift: 0.9016, note: "最大 uplift，但时延代价明显" },
+      { model: "MiniMax-M2", direct: 0.0139, rag: 0.7701, uplift: 0.7562, note: "强 uplift；历史上也最容易被 repair 讨论干扰" },
+      { model: "DeepSeek-R1", direct: 0.0682, rag: 0.7326, uplift: 0.6644, note: "保留原生 reasoning，仍体现明显正增益" },
+      { model: "GLM-5", direct: 0.1391, rag: 0.7772, uplift: 0.6381, note: "质量与证据一致性都比较稳" },
+      { model: "Qwen3-235B-A22B-Instruct-2507", direct: 0.1795, rag: 0.7388, uplift: 0.5593, note: "增益稳定，但 RAG 时延较高" },
+      { model: "Kimi-K2.5", direct: 0.1649, rag: 0.6350, uplift: 0.4701, note: "中等 uplift，叙事上更像补充组" },
+      { model: "ERNIE-4.5-Turbo-128K", direct: 0.4061, rag: 0.7309, uplift: 0.3248, note: "Direct 基线不低，RAG 仍然继续提升" },
+      { model: "DeepSeek-V3.2", direct: 0.6398, rag: 0.7660, uplift: 0.1262, note: "Direct 已较强，RAG 仍保持正增益" }
+    ];
+
+    const categories = [
+      { label: "doc/design", uplift: 0.7033, note: "文档设计与方法学理解，RAG 收益最显著" },
+      { label: "schema_tables", uplift: 0.5884, note: "结构化问答与字段对齐，是第二强受益区" },
+      { label: "ragppi", uplift: 0.4079, note: "仍为正增益，但更依赖模型的长文本压缩能力" }
+    ];
+
+    const topkRows = [
+      { k: 32, relevancy: 0.7614, uplift: 0.5593, latency: "45.1s" },
+      { k: 64, relevancy: 0.7480, uplift: 0.5459, latency: "77.4s" },
+      { k: 128, relevancy: 0.7146, uplift: 0.4856, latency: "143.5s" }
+    ];
+
+    const stabilityRows = [
+      {
+        model: "MiniMax-M2.7",
+        role: "Quality Lead",
+        tagClass: "quality",
+        note: "最终 clean stability 里质量更高，适合承担“质量优先”的正式对外结论。",
+        answer: "0.8220",
+        ci: "[0.8085, 0.8356]",
+        latency: "24610.60 ms",
+        rounds: "100 / 100"
+      },
+      {
+        model: "DeepSeek-V3.2",
+        role: "Latency Lead",
+        tagClass: "speed",
+        note: "平均相关性略低，但延迟明显更小，适合承担“效率优先”的对照结论。",
+        answer: "0.7624",
+        ci: "[0.7532, 0.7716]",
+        latency: "11009.04 ms",
+        rounds: "100 / 100"
+      }
+    ];
+
+    function metricCard(metric) {
+      return `
+        <div class="metric-card">
+          <span class="value">${metric.value}</span>
+          <span class="name">${metric.name}</span>
+        </div>
+      `;
+    }
+
+    function mainRow(row) {
+      return `
+        <div class="rank-row">
+          <div>
+            <div class="model">${row.model}</div>
+            <span class="detail">Direct ${row.direct.toFixed(4)} → RAG ${row.rag.toFixed(4)} · ${row.note}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="--target-width:${(row.uplift / 0.9016 * 100).toFixed(1)}%"></div>
+          </div>
+          <div class="rank-value">+${row.uplift.toFixed(4)}</div>
+        </div>
+      `;
+    }
+
+    function categoryRow(row, index) {
+      const fillClass = index === 0 ? "gold" : index === 1 ? "moss" : "ink";
+      return `
+        <div class="mini-row">
+          <div class="mini-head">
+            <span>${row.label}</span>
+            <span>+${row.uplift.toFixed(4)}</span>
+          </div>
+          <div class="tiny-track">
+            <div class="tiny-fill ${fillClass}" style="--target-width:${(row.uplift / 0.7033 * 100).toFixed(1)}%"></div>
+          </div>
+          <div class="mini-sub">${row.note}</div>
+        </div>
+      `;
+    }
+
+    function topkRow(row, index) {
+      const fillClass = index === 0 ? "gold" : index === 1 ? "moss" : "ink";
+      return `
+        <div class="mini-row">
+          <div class="mini-head">
+            <span>candidate_top_k = ${row.k}</span>
+            <span>answer_relevancy ${row.relevancy.toFixed(4)}</span>
+          </div>
+          <div class="tiny-track">
+            <div class="tiny-fill ${fillClass}" style="--target-width:${(row.relevancy / 0.7614 * 100).toFixed(1)}%"></div>
+          </div>
+          <div class="mini-sub">uplift +${row.uplift.toFixed(4)} · average RAG latency ${row.latency}</div>
+        </div>
+      `;
+    }
+
+    function stabilityCard(row) {
+      return `
+        <div class="duel-card">
+          <span class="tag ${row.tagClass}">${row.role}</span>
+          <h3>${row.model}</h3>
+          <p>${row.note}</p>
+          <div class="duel-stats">
+            <div class="stat-line"><span>answer_relevancy</span><strong>${row.answer}</strong></div>
+            <div class="stat-line"><span>95% CI</span><strong>${row.ci}</strong></div>
+            <div class="stat-line"><span>latency_ms mean</span><strong>${row.latency}</strong></div>
+            <div class="stat-line"><span>full_success_rounds</span><strong>${row.rounds}</strong></div>
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById("metric-grid").innerHTML = metrics.map(metricCard).join("");
+    document.getElementById("main-ranking").innerHTML = mainRows.map(mainRow).join("");
+    document.getElementById("category-stack").innerHTML = categories.map(categoryRow).join("");
+    document.getElementById("topk-stack").innerHTML = topkRows.map(topkRow).join("");
+    document.getElementById("stability-grid").innerHTML = stabilityRows.map(stabilityCard).join("");
+
+    window.addEventListener("load", () => {
+      document.body.classList.add("ready");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+[
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "README.md"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "FINAL_RESULT_SUMMARY.md"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "FINAL_RELEASE_GATE.md"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "pyproject.toml"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "configs"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "data\\fbtp_eval_fixed_120.jsonl"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "data\\fbtp_eval_fixed_120.summary.json"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "data\\fbtp_eval_smoke.jsonl"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "data\\fbtp_eval_smoke_one.jsonl"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "data\\README.md"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "docs"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "metrics"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "pipelines"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "prompts"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "scripts"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "tests"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "reports\\README_RELEASE_STRUCTURE.md"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "reports\\benchmark_final_summary_20260502"
+  },
+  {
+    "status": "copied",
+    "source": "<local_path_removed>",
+    "relative_path": "reports\\algorithm_resume"
+  }
+]

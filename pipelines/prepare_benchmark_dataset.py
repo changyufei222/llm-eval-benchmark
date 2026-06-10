@@ -77,10 +77,9 @@ def _resolve_schema_dir(schema_dir: Path | None = None) -> Path:
             summary = json.loads(summary_path.read_text(encoding="utf-8"))
             resolved = summary.get("schema_dir")
             if resolved:
-                mapped = str(resolved)
-                if mapped.startswith("/mnt/e/"):
-                    mapped = "<local_path_removed>" + mapped[len("/mnt/e/") :].replace("/", "\\")
-                candidates.append(Path(mapped))
+                resolved_text = str(resolved)
+                if "<local_path_removed>" not in resolved_text:
+                    candidates.append(Path(resolved_text))
         except json.JSONDecodeError:
             pass
 

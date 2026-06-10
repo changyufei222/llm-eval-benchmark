@@ -1,4 +1,4 @@
-# ragas config placeholder
+# ragas evaluation configuration
 model:
   provider: openai
   name: gpt-5.4
